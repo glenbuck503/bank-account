@@ -1,3 +1,11 @@
 .balance {
   display: none;
 }
+
+.withdraw {
+  display: none;
+}
+
+.deposit {
+  display: none;
+}

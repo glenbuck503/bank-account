@@ -4,7 +4,7 @@ function Database() {
   this.currentId = 0;
 }
 
-Database.prototype.addContact = function(member) {
+Database.prototype.addMember = function(member) {
   member.id = this.assignId();
   this.members[member.id] = member;
 }
@@ -14,22 +14,20 @@ Database.prototype.assignId = function() {
   return this.currentId;
 }
 
-Database.prototype.findContact = function(id) {
+Database.prototype.findMember = function(id) {
   if (this.members[id] != undefined) {
     return this.members[id];
   }
   return false;
 }
 
-Database.prototype.deleteContact = function(id) {
+Database.prototype.deleteMember = function(id) {
   if (this.members[id] === undefined) {
     return false;
   }
   delete this.members[id];
   return true;
 }
-
-
 
 function Member(firstName, lastName, balance) {
   this.firstName = firstName;
@@ -39,6 +37,10 @@ function Member(firstName, lastName, balance) {
 
 Member.prototype.deposit = function(userDeposit) {
   this.balance += userDeposit;
+}
+
+Member.prototype.withdrawl = function(userWithdrawl) {
+  this.balance -= userWithdrawl;
 }
 
 
@@ -55,10 +57,12 @@ $(document).ready(function() {
     let newmember = new Member(inputFirstName, inputLastName,inputStart)
     
 
-    dataBase.addContact(newmember)
+    dataBase.addMember(newmember)
 
-    console.log(dataBase);
     $(".register").hide()
+    $(".withdraw").show()
+    $(".deposit").show()
+    
   });
 
   $("form#deposit").submit(function(event) {
@@ -71,9 +75,15 @@ $(document).ready(function() {
     $(".balance").show();
   });
 
+  $("form#withdrawl").submit(function(event) {
+    event.preventDefault();
 
+    const userWithdrawl = parseInt($("input#withdrawAmount").val());
+    dataBase.members[1].withdrawl(userWithdrawl);
 
-
+    $(".balance").html("Your balance is " + dataBase.members[1].balance);
+    $(".balance").show();
+  });
 });
 
 
